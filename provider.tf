@@ -10,4 +10,8 @@ resource = {
     name     = "rg1"
     location = "centralus"
   }
+  rg2 = {
+    name     = "rg2"
+    location = "centralus"
+  }
 }
