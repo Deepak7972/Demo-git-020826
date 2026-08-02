@@ -4,3 +4,10 @@ resource "azurerm_resource_group" "rg" {
   name     = each.value.name
   location = each.value.location
 }
+
+resource = {
+  rg1 = {
+    name     = "rg1"
+    location = "centralus"
+  }
+}
