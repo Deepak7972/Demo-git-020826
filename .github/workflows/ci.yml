@@ -1,34 +1,61 @@
-name: Terraform CI Pipeline
+name: Terraform CI
 
 on:
-  push:
-    branches:
-      - main
-
   pull_request:
     branches:
       - main
 
+  push:
+    branches:
+      - feature/**
+
+permissions:
+  contents: read
 
 jobs:
 
-  terraform-validation:
+  terraform-ci:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: environments/dev
+
     steps:
 
-      - name: Checkout Code
-        uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform Version
-        run: terraform version
+    - name: Terraform Init
+      run: terraform init
 
-      - name: Terraform Format Check
-        run: terraform fmt -check -recursive
+    - name: Terraform Format Check
+      run: terraform fmt -check -recursive
 
-      - name: Terraform Validate
-        run: terraform validate
+    - name: Terraform Validate
+      run: terraform validate
+
+    - name: Install TFLint
+      uses: terraform-linters/setup-tflint@v4
+
+    - name: Run TFLint
+      run: tflint --recursive
+
+    - name: Run tfsec
+      uses: aquasecurity/tfsec-action@v1.0.3
+
+    - name: Run Checkov
+      uses: bridgecrewio/checkov-action@master
+
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan
+
+    - name: Upload Plan
+      uses: actions/upload-artifact@v4
+      with:
+        name: terraform-plan
+        path: environments/dev/tfplan
