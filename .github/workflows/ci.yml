@@ -34,7 +34,7 @@ jobs:
 
     - name: Terraform Format Check
       run: terraform fmt -check -recursive
-
+      
     - name: Terraform Validate
       run: terraform validate
 
@@ -57,4 +57,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: terraform-plan
-        path: environments/dev/tfplan
+        path: environments/dev/tfplan 
