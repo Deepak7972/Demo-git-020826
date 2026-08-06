@@ -34,3 +34,27 @@ jobs:
 
     - name: Terraform Format Check
       run: terraform fmt -check -recursive
+
+    - name: Terraform Validate
+      run: terraform validate
+
+    - name: Install TFLint
+      uses: terraform-linters/setup-tflint@v4
+
+    - name: Run TFLint
+      run: tflint --recursive
+
+    - name: Run tfsec
+      uses: aquasecurity/tfsec-action@v1.0.3
+
+    - name: Run Checkov
+      uses: bridgecrewio/checkov-action@master
+
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan
+
+    - name: Upload Plan
+      uses: actions/upload-artifact@v4
+      with:
+        name: terraform-plan
+        path: environments/dev/tfplan
