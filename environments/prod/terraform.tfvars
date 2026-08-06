@@ -36,7 +36,7 @@ publicip = {
     location            = "centralus"
     resource_group_name = "rg1"
     allocation_method   = "Static"
-  }                                                                                                                                                                                                           
+  }
   pip2 = {
     name                = "back-pip-prd"
     location            = "centralus"
